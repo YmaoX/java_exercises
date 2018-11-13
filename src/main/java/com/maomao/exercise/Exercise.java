@@ -87,4 +87,12 @@ public class Exercise {
 
 		return length;
 	}
+
+	/*
+	 * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+	 */
+	public static String longestPalindromicSubstring(final String s) {
+
+		return null;
+	}
 }
