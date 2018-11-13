@@ -1,9 +1,12 @@
 package com.maomao.exercise;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Exercise {
@@ -13,6 +16,60 @@ public class Exercise {
 //		System.out.println(add2Numbers(listA, listB));
 
 //		System.out.println(longestSubstring("bbbbb"));
+
+	}
+
+	/*
+	 * Given an array of integers, return indices of the two numbers such that they add up to a
+	 * specific target.You may assume that each input would have exactly one solution, and you
+	 * may not use the same element twice.
+	 */
+	public static int[] twoSum1(final int[] arr, final int target) {
+		class Pair implements Comparable<Pair> {
+			int value;
+			int index;
+
+			Pair(final int value, final int index) {
+				this.value = value;
+				this.index = index;
+			}
+
+			@Override
+			public int compareTo(final Pair o) {
+				return Integer.compare(this.value, o.value);
+			}
+		}
+		final Pair[] pair = new Pair[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			pair[i] = new Pair(arr[i], i);
+		}
+		Arrays.sort(pair);
+
+		for (int i = 0, j = pair.length - 1; i < j;) {
+			if (pair[i].value + pair[j].value == target) {
+				return new int[] { pair[i].index, pair[j].index };
+			}
+			if (pair[i].value + pair[j].value < target) {
+				i += 1;
+			} else if (pair[i].value + pair[j].value > target) {
+				j -= 1;
+			}
+		}
+		return new int[] { -1, -1 };
+	}
+
+	public static int[] twoSum2(final int[] arr, final int target) {
+		final Map<Integer, Integer> map = new HashMap<>();
+		//one loop
+		for (int i = 0; i < arr.length; i++) {
+			final Integer found = map.get(target - arr[i]);
+			if (found != null && found.intValue() != i) {
+				return new int[] { found, i };
+			}
+			map.put(arr[i], i);
+		}
+
+		return new int[] { -1, -1 };
 	}
 
 	/*
@@ -94,5 +151,40 @@ public class Exercise {
 	public static String longestPalindromicSubstring(final String s) {
 
 		return null;
+	}
+
+	/*
+	 * The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+	 * P   A   H   N
+	 * A P L S I I G
+	 * Y   I   R
+	 * And then read line by line: "PAHNAPLSIIGYIR"
+	 * Write the code that will take a string and make this conversion given a number of rows:
+	 * string convert(string text, int nRows);
+	 * convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+	 */
+	public static String zigzag(final String text, final int nRows) {
+		/*
+		 * find a way to convert index
+		 * each line i contains index: i + (2n - 2)*j
+		 * exception first and last line, after each index, we add idx + 2(n - i) - 2
+		 */
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < nRows; i++) {
+			int j = 0;
+			int idx = 0;
+			while ((idx = i + (2 * nRows - 2) * j) < text.length()) {
+				sb.append(text.charAt(idx));
+				//other line
+				if (i != 0 && i != nRows - 1) {
+					final int idx2 = idx + 2 * (nRows - i) - 2;
+					if (idx2 < text.length()) {
+						sb.append(text.charAt(idx2));
+					}
+				}
+				j += 1;
+			}
+		}
+		return sb.toString();
 	}
 }
