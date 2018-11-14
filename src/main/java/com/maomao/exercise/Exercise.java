@@ -17,6 +17,7 @@ public class Exercise {
 
 //		System.out.println(longestSubstring("bbbbb"));
 
+		System.out.println(Arrays.toString(mostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 })));
 	}
 
 	/*
@@ -25,6 +26,7 @@ public class Exercise {
 	 * may not use the same element twice.
 	 */
 	public static int[] twoSum1(final int[] arr, final int target) {
+		//sort list, then use two pointers
 		class Pair implements Comparable<Pair> {
 			int value;
 			int index;
@@ -36,7 +38,7 @@ public class Exercise {
 
 			@Override
 			public int compareTo(final Pair o) {
-				return Integer.compare(this.value, o.value);
+				return Integer.compare(value, o.value);
 			}
 		}
 		final Pair[] pair = new Pair[arr.length];
@@ -59,6 +61,7 @@ public class Exercise {
 	}
 
 	public static int[] twoSum2(final int[] arr, final int target) {
+		//use map to index each element
 		final Map<Integer, Integer> map = new HashMap<>();
 		//one loop
 		for (int i = 0; i < arr.length; i++) {
@@ -187,4 +190,48 @@ public class Exercise {
 		}
 		return sb.toString();
 	}
+
+	/*
+	 * Reverse digits of an integer.
+	 * For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
+	 */
+	public static int reverseInt(final int input) {
+		int result = 0;
+		int tmp = input > 0 ? input : -input;
+		while (tmp > 0) {
+			final int r = tmp % 10;
+			tmp = tmp / 10;
+			result = result * 10 + r;
+			if (result > Integer.MAX_VALUE) {
+				return 0;
+			}
+		}
+		return input > 0 ? result : -result;
+	}
+
+	/*
+	 * Given n non-negative integers a1, a2, ..., an, where each represents a point at coordinate (i, ai).
+	 * n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0).
+	 * Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+	 */
+	public static int[] mostWater(final int[] height) {
+		//2 pointers, large one stay, move small one
+		int s = 0;
+		final int[] rtn = new int[2];
+		for (int i = 0, j = height.length - 1; i < j;) {
+			final int currentS = Math.min(height[i], height[j]) * (j - i);
+			if (currentS > s) {
+				rtn[0] = i;
+				rtn[1] = j;
+				s = currentS;
+			}
+			if (i < j) {
+				i += 1;
+			} else {
+				j -= 1;
+			}
+		}
+		return rtn;
+	}
+
 }
