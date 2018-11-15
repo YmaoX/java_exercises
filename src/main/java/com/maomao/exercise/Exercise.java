@@ -19,7 +19,9 @@ public class Exercise {
 //		System.out.println(add2Numbers(listA, listB));
 //		System.out.println(longestSubstring("bbbbb"));
 //		System.out.println(Arrays.toString(mostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 })));
-
+		for (final int[] arr : threeSum(new int[] { -1, 0, 1, -2, 2, -1, -4 })) {
+			System.out.println(Arrays.toString(arr));
+		}
 	}
 
 	/*
@@ -255,4 +257,31 @@ public class Exercise {
 		return sb.toString();
 	}
 
+	/*
+	 * Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0?
+	 * Find all unique triplets in the array which gives the sum of zero.
+	 */
+	public static List<int[]> threeSum(final int[] input) {
+		final List<int[]> list = new ArrayList<>();
+		Arrays.sort(input);
+		for (int i = 0; i < input.length; i++) {
+			final int fixed = input[i];
+			if (i > 0 && fixed == input[i - 1]) {
+				i++;
+			} else {
+				for (int l = i, r = input.length - 1; l < r;) {
+					if (fixed + input[l] + input[r] < 0) {
+						l += 1;
+					} else if (fixed + input[l] + input[r] > 0) {
+						r -= 1;
+					} else {
+						list.add(new int[] { input[i], input[l], input[r] });
+						l += 1;
+						r -= 1;
+					}
+				}
+			}
+		}
+		return list;
+	}
 }
