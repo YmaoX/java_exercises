@@ -7,17 +7,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import com.maomao.exercise.Trie.TrieNode;
 
 public class Exercise {
 	public static void main(final String[] args) {
 //		final List<Integer> listA = Arrays.asList(2, 4, 6);
 //		final List<Integer> listB = Arrays.asList(9, 3, 6, 5);
 //		System.out.println(add2Numbers(listA, listB));
-
 //		System.out.println(longestSubstring("bbbbb"));
+//		System.out.println(Arrays.toString(mostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 })));
 
-		System.out.println(Arrays.toString(mostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 })));
 	}
 
 	/*
@@ -232,6 +234,25 @@ public class Exercise {
 			}
 		}
 		return rtn;
+	}
+
+	/*
+	 * Write a function to find the longest common prefix string amongst an array of strings.
+	 * If there is no common prefix, return an empty string "".
+	 */
+	public static String longestCommonPrefix(final String... ss) {
+		final Trie trie = new Trie();
+		for (final String s : ss) {
+			trie.insert(s);
+		}
+		final StringBuilder sb = new StringBuilder();
+		Map<Character, TrieNode> children = trie.getRoot().getChildren();
+		while (children.size() == 1) {
+			final Entry<Character, TrieNode> entry = children.entrySet().iterator().next();
+			sb.append(entry.getKey());
+			children = entry.getValue().getChildren();
+		}
+		return sb.toString();
 	}
 
 }

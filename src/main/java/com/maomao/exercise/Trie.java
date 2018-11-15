@@ -10,47 +10,64 @@ import java.util.Map;
  */
 public class Trie {
 
-	public static void main(final String[] args) {
-		final Trie trie = new Trie();
-
-		trie.insert("is");
-		trie.insert("ill");
-		trie.insert("ile");
-		trie.insert("iss");
-		System.out.println(trie.root.toString());
-	}
+//	public static void main(final String[] args) {
+//		final Trie trie = new Trie();
+//		trie.insert("iss");
+//		trie.insert("ill");
+//		trie.insert("break");
+//		trie.insert("bread");
+//		System.out.println(trie.find("is"));
+//		System.out.println(trie.find("break"));
+//		System.out.println(trie.find("isss"));
+//	}
 
 	private final TrieNode root = new TrieNode(Character.MIN_VALUE);
 
 	public void insert(final String s) {
-		TrieNode currentNode = root;
+		Map<Character, TrieNode> children = root.getChildren();
 		for (int i = 0; i < s.length(); i++) {
-			final Map<Character, TrieNode> children = currentNode.getChildren();
 			final char c = s.charAt(i);
 			TrieNode node = children.get(c);
 			if (node == null) {
 				node = new TrieNode(c);
 				children.put(c, node);
+				if (i == s.length() - 1) {
+					node.setLeaf(true);
+				}
 			}
-			currentNode.setLeaf(false);
-			currentNode = node;
+			children = node.getChildren();
 		}
 	}
 
 	public boolean find(final String s) {
-
-		return false;
+		Map<Character, TrieNode> children = root.getChildren();
+		for (int i = 0; i < s.length(); i++) {
+			final char c = s.charAt(i);
+			final TrieNode node = children.get(c);
+			if (node == null) {
+				return false;
+			}
+			if (!node.isLeaf()) {
+				children = node.getChildren();
+			} else {
+				return i == s.length() - 1;
+			}
+		}
+		return true;
 	}
 
-	private static class TrieNode {
-		final char value;
-		final Map<Character, TrieNode> children;
-		boolean isLeaf;
+	public TrieNode getRoot() {
+		return root;
+	}
+
+	public static class TrieNode {
+		private final char value;
+		private final Map<Character, TrieNode> children;
+		private boolean isLeaf;
 
 		TrieNode(final char value) {
 			this.value = value;
 			children = new HashMap<>();
-			isLeaf = true;
 		}
 
 		void setLeaf(final boolean isLeaf) {
@@ -71,12 +88,7 @@ public class Trie {
 
 		@Override
 		public String toString() {
-			final StringBuilder sb = new StringBuilder();
-			for (final char c : children.keySet()) {
-				sb.append(c).append(",");
-			}
-			sb.delete(sb.length() - 1, sb.length());
-			return "value: " + getValue() + ", children:" + sb.toString();
+			return "value: " + getValue();
 		}
 	}
 }
