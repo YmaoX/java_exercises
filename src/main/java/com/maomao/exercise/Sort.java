@@ -5,6 +5,7 @@ import java.util.Random;
 
 //simple sort implementation, not generic, asc
 public class Sort {
+
 	public static void main(final String[] args) {
 		final Random r = new Random();
 		final int limit = 40;
@@ -32,7 +33,7 @@ public class Sort {
 
 	private static void quicksort(final int[] arr, final int s, final int e) {
 		if (e >= s) {
-			final int pivot = partition(arr, s, e);
+			final int pivot = partition2(arr, s, e);
 			quicksort(arr, s, pivot - 1);
 			quicksort(arr, pivot + 1, e);
 		}
@@ -52,6 +53,28 @@ public class Sort {
 		return j;
 	}
 
+	private static int partition2(final int[] arr, final int left, final int right) {
+		final int pivot = arr[right];
+		int leftPtr = left - 1; // left (after ++)
+		int rightPtr = right; // right-1 (after --)
+		while (true) { // find bigger item
+			while (arr[++leftPtr] < pivot) {
+				; // (nop)
+			}
+			// find smaller item
+			while (rightPtr > 0 && arr[--rightPtr] > pivot) {
+				; // (nop)
+			}
+			if (leftPtr >= rightPtr) {
+				break; // partition done
+			} else {
+				swap(arr, leftPtr, rightPtr); // swap elements
+			}
+		} // end while(true)
+		swap(arr, leftPtr, right); // restore pivot
+		return leftPtr; // return pivot location
+	}
+
 	private static void swap(final int[] arr, final int i, final int j) {
 		if (i != j) {
 			final int temp = arr[i];
@@ -68,28 +91,16 @@ public class Sort {
 		}
 		while (h > 0) {
 			for (int i = h; i < arr.length; i += h) {
+				final int tmp = arr[i];
 				int j = i - h;
-				for (; j >= 0; j -= h) {
-					if (arr[i] > arr[j]) {
-						shift(arr, j + h, i, h);
-						break;
-					}
+				while (j >= 0 && arr[j] > tmp) {
+					arr[j + h] = arr[j];
+					j -= h;
 				}
-				if (j < 0) {
-					shift(arr, 0, i, h);
-				}
+				arr[j + h] = tmp;
 			}
 			h = (h - 1) / 3;
 		}
 	}
 
-	private static void shift(final int[] arr, final int s, final int e, final int step) {
-		if (s < e) {
-			final int tmp = arr[e];
-			for (int i = e; i > s; i -= step) {
-				arr[i] = arr[i - step];
-			}
-			arr[s] = tmp;
-		}
-	}
 }

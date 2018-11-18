@@ -2,10 +2,25 @@ package com.maomao.exercise;
 
 import java.util.Comparator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author y.xu
  */
 public class BiTree<T> {
+	private static Logger logger = LoggerFactory.getLogger(BiTree.class);
+
+	public static void main(final String[] args) {
+		final BiTree<Integer> tree = new BiTree<>((a, b) -> Integer.compare(a, b));
+		final int[] arr = new int[] { 13, 51, 57, 5, 48, 11, 26, 7, 19, 35 };
+		for (final int i : arr) {
+			tree.insert(i);
+		}
+		if (tree.root != null) {
+			tree.root.print();
+		}
+	}
 
 	private Node<T> root;
 	private final Comparator<T> comparator;
@@ -15,18 +30,52 @@ public class BiTree<T> {
 	}
 
 	public Node<T> find(final T value) {
-		final Node<T> current = root;
+		Node<T> current = root;
 		while (current != null) {
-			if (current.getValue().equals(value)) {
+			final int rst = comparator.compare(current.getValue(), value);
+			switch (rst) {
+			case 0:
 				return current;
+			case 1:
+				current = current.right;
+				break;
+			case -1:
+				current = current.left;
+				break;
 			}
-			//TODO
 		}
 		return null;
 	}
 
 	public void insert(final T value) {
-
+		if (root == null) {
+			root = new Node<>(value);
+		} else {
+			Node<T> current = root;
+			while (true) {
+				final int rst = comparator.compare(value, current.getValue());
+				switch (rst) {
+				case 0:
+					throw new RuntimeException("value already exists.");
+				case 1:
+					if (current.right != null) {
+						current = current.right;
+					} else {
+						current.right = new Node<>(value);
+						return;
+					}
+					break;
+				case -1:
+					if (current.left != null) {
+						current = current.left;
+					} else {
+						current.left = new Node<>(value);
+						return;
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	public void delete(final T value) {
@@ -61,6 +110,16 @@ public class BiTree<T> {
 
 		public T getValue() {
 			return value;
+		}
+
+		public void print() {
+			if (left != null) {
+				left.print();
+			}
+			System.out.println(value);
+			if (right != null) {
+				right.print();
+			}
 		}
 
 		@Override
