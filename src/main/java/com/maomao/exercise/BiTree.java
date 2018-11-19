@@ -13,13 +13,14 @@ public class BiTree<T> {
 
 	public static void main(final String[] args) {
 		final BiTree<Integer> tree = new BiTree<>((a, b) -> Integer.compare(a, b));
-		final int[] arr = new int[] { 13, 51, 57, 5, 48, 11, 26, 7, 19, 35 };
+		final int[] arr = new int[] { 13, 51, 57, 5, 48, 11, 26, 7, 19, 35, 55, 60 };
 		for (final int i : arr) {
 			tree.insert(i);
 		}
-		if (tree.root != null) {
-			tree.root.print();
-		}
+		tree.root.print();
+		tree.delete(57);
+		System.out.println("--------------");
+		tree.root.print();
 	}
 
 	private Node<T> root;
@@ -79,7 +80,64 @@ public class BiTree<T> {
 	}
 
 	public void delete(final T value) {
-		//TODO
+		/*
+		 * if node is leaf, then delete directly
+		 * if node has a single child, then move up child
+		 * if node has two children, then find its successor
+		 */
+		Node<T> current = root;
+		Node<T> parent = null;
+		Node<T> found = null;
+		while (current != null) {
+			if (current.value.equals(value)) {
+				found = current;
+				break;
+			} else if (comparator.compare(current.value, value) > 0) {
+				parent = current;
+				current = current.left;
+			} else {
+				parent = current;
+				current = current.right;
+			}
+		}
+		if (found == null) {
+			throw new RuntimeException("value not found");
+		}
+		//no child
+		final Node<T> replace;
+		if (found.left == null && found.right == null) {
+			replace = null;
+		}
+		//single child
+		else if (found.right == null || found.left == null) {
+			replace = found.right == null ? found.left : found.right;
+		}
+		//two children
+		else {
+			final Node<T> firstRight = found.right;
+			if (firstRight.left == null) {
+				replace = firstRight;
+				replace.left = found.left;
+			} else {
+				Node<T> tmp = firstRight.left;
+				Node<T> tmpParent = firstRight;
+				while (tmp.left != null) {
+					tmpParent = tmp;
+					tmp = tmp.left;
+				}
+				tmpParent.left = null;
+				replace = tmp;
+				replace.left = found.left;
+				replace.right = found.right;
+			}
+		}
+		if (parent == null) {
+			root = replace;
+		} else if (parent.left == found) {
+			parent.left = replace;
+		} else if (parent.right == found) {
+			parent.right = replace;
+		}
 	}
 
 	//left < this < right
