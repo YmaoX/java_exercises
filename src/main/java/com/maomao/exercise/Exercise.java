@@ -2,6 +2,7 @@ package com.maomao.exercise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,12 +23,15 @@ public class Exercise {
 //		for (final int[] arr : threeSum(new int[] { -1, 0, 1, -2, 2, -1, -4 })) {
 //			System.out.println(Arrays.toString(arr));
 //		}
-		final int[] in = new int[] { 3, 1, 8, 3, 2, 5, 4, 8, 3, 7 };
-		Sort.quicksort(in);
-		final int i = removeDuplicates(in);
-		for (int j = 0; j < i; j++) {
-			System.out.println(in[j]);
-		}
+//		final int[] in = new int[] { 3, 1, 8, 3, 2, 5, 4, 8, 3, 7 };
+//		Sort.quicksort(in);
+//		final int i = removeDuplicates(in);
+//		for (int j = 0; j < i; j++) {
+//			System.out.println(in[j]);
+//		}
+//		System.out.println(countAndSay(5));
+		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
+		System.out.println(ans);
 	}
 
 	/*
@@ -307,5 +311,77 @@ public class Exercise {
 			}
 		}
 		return noDup + 1;
+	}
+
+	/*
+	 * The count-and-say sequence is the sequence of integers with the first five terms as following:
+	 * 1.     1
+	 * 2.     11
+	 * 3.     21
+	 * 4.     1211
+	 * 5.     111221
+	 *
+	 * 1 is read off as "one 1" or 11.
+	 * 11 is read off as "two 1s" or 21.
+	 * 21 is read off as "one 2, then one 1" or 1211.
+	 * Given an integer n, generate the nth term of the count-and-say sequence.
+	 * Note: Each term of the sequence of integers will be represented as a string.
+	 */
+	public static String countAndSay(final int n) {
+		String previous = "1";
+		for (int i = 1; i < n; i++) {
+			previous = countAndSayIter(previous);
+		}
+		return previous;
+	}
+
+	private static String countAndSayIter(final String in) {
+		int count = 0;
+		char previous = ' ';
+		final StringBuilder sb = new StringBuilder();
+		for (final char c : in.toCharArray()) {
+			if (previous == c || previous == ' ') {
+				count += 1;
+			} else {
+				sb.append(count).append(previous);
+			}
+			previous = c;
+		}
+		sb.append(count).append(previous);
+		return sb.toString();
+	}
+
+	/*
+	 * Given a set of candidate numbers (candidates) (without duplicates) and a target number (target),
+	 * find all unique combinations in candidates where the candidate numbers sums to target.
+	 * The same repeated number may be chosen from candidates unlimited number of times.
+	 * Note:
+	 * 	All numbers (including target) will be positive integers.
+	 * 	The solution set must not contain duplicate combinations.
+	 */
+	public static List<List<Integer>> combinationSum(final Set<Integer> set, final int target) {
+		if (set.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final List<List<Integer>> solutions = new ArrayList<>();
+		final int first = set.iterator().next();
+		final int restTarget = target - first;
+		if (restTarget == 0) {
+			final List<Integer> list = new ArrayList<>();
+			list.add(first);
+			solutions.add(list);
+		} else if (restTarget > 0) {
+			final Set<Integer> rest = new HashSet<>(set);
+			rest.remove(first);
+			final List<List<Integer>> s1 = combinationSum(set, restTarget);
+			final List<List<Integer>> s2 = combinationSum(rest, target);
+			for (final List<Integer> list : s1) {
+				list.add(first);
+			}
+			solutions.addAll(s1);
+			solutions.addAll(s2);
+		}
+
+		return solutions;
 	}
 }
