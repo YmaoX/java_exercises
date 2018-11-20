@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author y.xu
  */
+@SuppressWarnings("synthetic-access")
 public class BiTree<T> {
 	private static Logger logger = LoggerFactory.getLogger(BiTree.class);
 
@@ -17,9 +18,7 @@ public class BiTree<T> {
 		for (final int i : arr) {
 			tree.insert(i);
 		}
-		if (tree.root != null) {
-			tree.root.print();
-		}
+		tree.inOrderPrint(tree.root);
 	}
 
 	private Node<T> root;
@@ -79,11 +78,19 @@ public class BiTree<T> {
 	}
 
 	public void delete(final T value) {
-		//TODO
+
+	}
+
+	public void inOrderPrint(final Node<T> node) {
+		if (node != null) {
+			inOrderPrint(node.left);
+			System.out.println(node.value);
+			inOrderPrint(node.right);
+		}
 	}
 
 	//left < this < right
-	public class Node<T> {
+	public static class Node<T> {
 		private final T value;
 		private Node<T> left;
 		private Node<T> right;
@@ -110,16 +117,6 @@ public class BiTree<T> {
 
 		public T getValue() {
 			return value;
-		}
-
-		public void print() {
-			if (left != null) {
-				left.print();
-			}
-			System.out.println(value);
-			if (right != null) {
-				right.print();
-			}
 		}
 
 		@Override

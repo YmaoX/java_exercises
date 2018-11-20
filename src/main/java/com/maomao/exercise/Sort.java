@@ -39,6 +39,8 @@ public class Sort {
 		}
 	}
 
+	//bad implementation
+	@SuppressWarnings("unused")
 	private static int partition(final int[] arr, final int s, final int e) {
 		final int p = arr[e];
 		int j = s - 1;
@@ -59,11 +61,11 @@ public class Sort {
 		int rightPtr = right; // right-1 (after --)
 		while (true) { // find bigger item
 			while (arr[++leftPtr] < pivot) {
-				; // (nop)
+				// (nop)
 			}
 			// find smaller item
 			while (rightPtr > 0 && arr[--rightPtr] > pivot) {
-				; // (nop)
+				// (nop)
 			}
 			if (leftPtr >= rightPtr) {
 				break; // partition done

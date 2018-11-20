@@ -19,8 +19,14 @@ public class Exercise {
 //		System.out.println(add2Numbers(listA, listB));
 //		System.out.println(longestSubstring("bbbbb"));
 //		System.out.println(Arrays.toString(mostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 })));
-		for (final int[] arr : threeSum(new int[] { -1, 0, 1, -2, 2, -1, -4 })) {
-			System.out.println(Arrays.toString(arr));
+//		for (final int[] arr : threeSum(new int[] { -1, 0, 1, -2, 2, -1, -4 })) {
+//			System.out.println(Arrays.toString(arr));
+//		}
+		final int[] in = new int[] { 3, 1, 8, 3, 2, 5, 4, 8, 3, 7 };
+		Sort.quicksort(in);
+		final int i = removeDuplicates(in);
+		for (int j = 0; j < i; j++) {
+			System.out.println(in[j]);
 		}
 	}
 
@@ -283,5 +289,23 @@ public class Exercise {
 			}
 		}
 		return list;
+	}
+
+	/*
+	 * Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.
+	 * Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+	 */
+	public static int removeDuplicates(final int[] arr) {
+		if (arr.length < 2) {
+			return arr.length;
+		}
+		int noDup = 0;
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[noDup] != arr[i]) {
+				noDup += 1;
+				arr[noDup] = arr[i];
+			}
+		}
+		return noDup + 1;
 	}
 }
