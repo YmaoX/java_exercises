@@ -11,9 +11,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.maomao.exercise.Trie.TrieNode;
 
 public class Exercise {
+	private static Logger logger = LoggerFactory.getLogger(Exercise.class);
+
 	public static void main(final String[] args) {
 //		final List<Integer> listA = Arrays.asList(2, 4, 6);
 //		final List<Integer> listB = Arrays.asList(9, 3, 6, 5);
@@ -30,8 +35,9 @@ public class Exercise {
 //			System.out.println(in[j]);
 //		}
 //		System.out.println(countAndSay(5));
-		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
-		System.out.println(ans);
+//		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
+//		System.out.println(ans);
+		System.out.println(splitArrayConsecutiveSub(new int[] { 1, 2, 3, 4, 4, 5 }));
 	}
 
 	/*
@@ -363,6 +369,7 @@ public class Exercise {
 		if (set.isEmpty()) {
 			return Collections.emptyList();
 		}
+		//solutions = solutions with first element + solutions without first element
 		final List<List<Integer>> solutions = new ArrayList<>();
 		final int first = set.iterator().next();
 		final int restTarget = target - first;
@@ -383,5 +390,38 @@ public class Exercise {
 		}
 
 		return solutions;
+	}
+
+	/*
+	 * You are given an integer array sorted in ascending order (may contain duplicates),
+	 * you need to split them into several subsequences, where each subsequences consist
+	 * of at least 3 consecutive integers. Return whether you can make such a split.
+	 */
+	public static boolean splitArrayConsecutiveSub(final int[] nums) {
+		final Map<Integer, Integer> frequency = new HashMap<>();
+		final Map<Integer, Integer> tails = new HashMap<>();
+		for (final int num : nums) {
+			frequency.put(num, frequency.getOrDefault(num, 0) + 1);
+		}
+		for (final int num : nums) {
+			if (frequency.get(num) == 0) {
+				continue;
+			}
+			final int count = tails.getOrDefault(num - 1, 0);
+			if (count > 0) {
+				tails.put(num - 1, count - 1);
+				tails.put(num, tails.getOrDefault(num, 0) + 1);
+			} else if (count == 0) {
+				if (frequency.getOrDefault(num + 1, 0) > 0 && frequency.getOrDefault(num + 2, 0) > 0) {
+					frequency.put(num + 1, frequency.getOrDefault(num + 1, 0) - 1);
+					frequency.put(num + 2, frequency.getOrDefault(num + 2, 0) - 1);
+					tails.put(num + 2, tails.getOrDefault(num + 2, 0) + 1);
+				} else {
+					return false;
+				}
+			}
+			frequency.put(num, frequency.getOrDefault(num, 0) - 1);
+		}
+		return true;
 	}
 }
