@@ -37,7 +37,10 @@ public class Exercise {
 //		System.out.println(countAndSay(5));
 //		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
 //		System.out.println(ans);
-		System.out.println(splitArrayConsecutiveSub(new int[] { 1, 2, 3, 4, 4, 5 }));
+//		System.out.println(splitArrayConsecutiveSub(new int[] { 1, 2, 3, 4, 4, 5 }));
+		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
+		nextPermutation(arr);
+		System.out.println(Arrays.toString(arr));
 	}
 
 	/*
@@ -423,5 +426,38 @@ public class Exercise {
 			frequency.put(num, frequency.getOrDefault(num, 0) - 1);
 		}
 		return true;
+	}
+
+	/*Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+	 * If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+	 * The replacement must be in-place and use only constant extra memory.
+	 */
+	public static void nextPermutation(final int[] arr) {
+		if (arr.length >= 2) {
+			int i = arr.length - 1, j = arr.length - 2;
+			while (j >= 0 && arr[j] >= arr[i]) {
+				i -= 1;
+				j -= 1;
+			}
+
+			if (j >= 0) {
+				while (arr[i] >= arr[j]) {
+					i += 1;
+				}
+				final int tmp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = tmp;
+			}
+
+			j += 1;
+			i = arr.length - 1;
+			while (j < i) {
+				final int tmp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = tmp;
+				j += 1;
+				i -= 1;
+			}
+		}
 	}
 }
