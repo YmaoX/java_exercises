@@ -1,5 +1,6 @@
 package com.maomao.exercise;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import org.slf4j.Logger;
@@ -18,11 +19,7 @@ public class BiTree<T> {
 		for (final int i : arr) {
 			tree.insert(i);
 		}
-		tree.inOrderPrint(tree.root);
-		System.out.println();
-		System.out.println("------------------------");
-		tree.delete(13);
-		tree.inOrderPrint(tree.root);
+		System.out.println(tree.toString());
 	}
 
 	private Node<T> root;
@@ -148,6 +145,63 @@ public class BiTree<T> {
 			System.out.print(node.value);
 			System.out.print(" ");
 			inOrderPrint(node.right);
+		}
+	}
+
+	public int depth() {
+		return depth(root);
+	}
+
+	private int depth(final Node<T> root) {
+		if (root != null) {
+			final int depthChild = Math.max(depth(root.left), depth(root.right));
+			return 1 + depthChild;
+		}
+		return 0;
+	}
+
+	/*
+	 * Print a binary tree in an m*n 2D string array following these rules:
+	 * 	The row number m should be equal to the height of the given binary tree.
+	 * 	The column number n should always be an odd number.
+	 * 	The root node's value (in string format) should be put in the exactly middle of the first row it can be put.
+	 * 		The column and the row where the root node belongs will separate the rest space into two parts (left-bottom part and right-bottom part).
+	 * 		You should print the left subtree in the left-bottom part and print the right subtree in the right-bottom part.
+	 * 		The left-bottom part and the right-bottom part should have the same size. Even if one subtree is none while the other is not,
+	 * 		you don't need to print anything for the none subtree but still need to leave the space as large as that for the other subtree.
+	 * 		However, if two subtrees are none, then you don't need to leave space for both of them.
+	 * 	Each unused space should contain an empty string "".
+	 * 	Print the subtrees following the same rules.
+	 *
+	 */
+	@Override
+	public String toString() {
+		final int n = depth();
+		final int m = (int) (Math.pow(2, n) - 1);
+		final String[][] arr = new String[n][m];
+		for (final String[] element : arr) {
+			for (int i = 0; i < element.length; i++) {
+				element[i] = "";
+			}
+		}
+
+		fillStringArray(arr, root, 0, 0, m - 1);
+
+		final StringBuilder sb = new StringBuilder();
+		for (final String[] element : arr) {
+			sb.append(Arrays.toString(element)).append("\n");
+		}
+		return sb.toString();
+	}
+
+	private void fillStringArray(final String[][] arr, final Node<T> node, final int level, final int start, final int end) {
+		final int current = (start + end) / 2;
+		arr[level][current] = node.toString();
+		if (node.left != null) {
+			fillStringArray(arr, node.left, level + 1, start, current - 1);
+		}
+		if (node.right != null) {
+			fillStringArray(arr, node.right, level + 1, current + 1, end);
 		}
 	}
 
