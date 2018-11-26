@@ -38,9 +38,10 @@ public class Exercise {
 //		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
 //		System.out.println(ans);
 //		System.out.println(splitArrayConsecutiveSub(new int[] { 1, 2, 3, 4, 4, 5 }));
-		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
-		nextPermutation(arr);
-		System.out.println(Arrays.toString(arr));
+//		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
+//		nextPermutation(arr);
+//		System.out.println(Arrays.toString(arr));
+		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
 	}
 
 	/*
@@ -460,4 +461,21 @@ public class Exercise {
 			}
 		}
 	}
+
+	public static int searchInsertPosition(final int[] arr, final int target) {
+		int i = 0, j = arr.length - 1;
+		while (i <= j) {
+			final int mid = i + ((j - i) >> 1);
+			if (arr[mid] > target) {
+				j = mid - 1;
+			} else if (arr[mid] < target) {
+				i = mid + 1;
+			} else {
+				return mid;
+			}
+		}
+		//return i is always correct
+		return i;
+	}
+
 }
