@@ -38,9 +38,10 @@ public class Exercise {
 //		final List<List<Integer>> ans = combinationSum(new HashSet<>(Arrays.asList(2, 3, 5)), 8);
 //		System.out.println(ans);
 //		System.out.println(splitArrayConsecutiveSub(new int[] { 1, 2, 3, 4, 4, 5 }));
-		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
-		nextPermutation(arr);
-		System.out.println(Arrays.toString(arr));
+//		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
+//		nextPermutation(arr);
+//		System.out.println(Arrays.toString(arr));
+		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
 	}
 
 	/*
@@ -459,5 +460,43 @@ public class Exercise {
 				i -= 1;
 			}
 		}
+	}
+
+	/*
+	 * Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+	 * Your algorithm's runtime complexity must be in the order of O(log n).
+	 * If the target is not found in the array, return [-1, -1].
+	 */
+	public static int[] searchForARange(final int[] arr, final int target) {
+		final int[] rtn = new int[2];
+
+		int l = 0, r = arr.length - 1;
+		int mid = -1;
+		while (l <= r) {
+			mid = l + ((r - l) >> 1);
+			if (arr[mid] < target) {
+				l = mid + 1;
+			} else if (arr[mid] > target) {
+				r = mid - 1;
+			} else {
+				break;
+			}
+		}
+		if (l > r) {
+			rtn[0] = -1;
+			rtn[1] = -1;
+		} else {
+			l = mid;
+			while (l - 1 >= 0 && arr[l - 1] == target) {
+				l -= 1;
+			}
+			r = mid;
+			while (r + 1 < arr.length && arr[r + 1] == target) {
+				r += 1;
+			}
+			rtn[0] = l;
+			rtn[1] = r;
+		}
+		return rtn;
 	}
 }
