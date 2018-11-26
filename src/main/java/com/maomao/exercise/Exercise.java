@@ -43,7 +43,7 @@ public class Exercise {
 //		System.out.println(Arrays.toString(arr));
 //		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
 //		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
-
+		System.out.println(multiplyStrings("123", "456"));
 	}
 
 	/*
@@ -516,5 +516,48 @@ public class Exercise {
 			rtn[1] = r;
 		}
 		return rtn;
+	}
+
+	/*
+	 * Given two non-negative integers num1 and num2 represented as strings,
+	 * return the product of num1 and num2, also represented as a string.
+	 */
+	public static String multiplyStrings(final String a, final String b) {
+		//'\u0000'
+		final char[] aa = a.toCharArray();
+		final char[] bb = b.toCharArray();
+		final int[][] rtn = new int[b.length()][aa.length + bb.length];
+		for (int j = bb.length - 1, row = 0; j >= 0; j--, row++) {
+			final int bInt = bb[j] - '0';
+			int carry = 0;
+			int i = aa.length - 1;
+
+			for (; i >= 0; i--) {
+				final int aInt = aa[i] - '0';
+				final int product = aInt * bInt + carry;
+				final int re = product % 10;
+				carry = product / 10;
+				rtn[row][i + j + 1] = re;
+			}
+			if (carry > 0) {
+				rtn[row][i + j + 1] = carry;
+			}
+		}
+		final StringBuilder sb = new StringBuilder();
+		int carry = 0;
+		for (int j = rtn[0].length - 1; j >= 0; j--) {
+			int sum = 0;
+			for (int i = 0; i < rtn.length; i++) {
+				sum += rtn[i][j];
+			}
+			sum += carry;
+			carry = sum / 10;
+			sb.append(sum % 10);
+		}
+		while (sb.charAt(sb.length() - 1) == '0') {
+			sb.deleteCharAt(sb.length() - 1);
+		}
+
+		return sb.reverse().toString();
 	}
 }
