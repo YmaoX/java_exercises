@@ -41,11 +41,9 @@ public class Exercise {
 //		final int[] arr = new int[] { 7, 6, 5, 4, 3, 2 };
 //		nextPermutation(arr);
 //		System.out.println(Arrays.toString(arr));
-		<<<<<<< HEAD
-		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
-		=======
-				System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
-		>>>>>>> refs/remotes/origin/master
+//		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
+//		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
+
 	}
 
 	/*
