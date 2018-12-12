@@ -43,7 +43,8 @@ public class Exercise {
 //		System.out.println(Arrays.toString(arr));
 //		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
 //		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
-		System.out.println(multiplyStrings("123", "456"));
+//		System.out.println(multiplyStrings("123", "456"));
+		System.out.println(uniquePaths(7, 3));
 	}
 
 	/*
@@ -561,4 +562,29 @@ public class Exercise {
 		return sb.reverse().toString();
 	}
 
+	/*
+	 * A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+	 * The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right
+	 * corner of the grid (marked 'Finish' in the diagram below).
+	 * How many possible unique paths are there?
+	 */
+	public static int uniquePaths(final int m, final int n) {
+		return uniquePaths(m, n, 0, 0);
+	}
+
+	private static int uniquePaths(final int m, final int n, final int x, final int y) {
+		//reach mark
+		int count = 0;
+		if (x == m - 1 && y == n - 1) {
+			count = 1;
+		} else if (x == m - 1) {
+			count = uniquePaths(m, n, x, y + 1);
+		} else if (y == n - 1) {
+			count = uniquePaths(m, n, x + 1, y);
+		} else {
+			count = uniquePaths(m, n, x, y + 1) + uniquePaths(m, n, x + 1, y);
+		}
+
+		return count;
+	}
 }
