@@ -1,7 +1,9 @@
 package com.maomao.exercise;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Deque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,9 @@ public class BiTree<T> {
 		for (final int i : arr) {
 			tree.insert(i);
 		}
-		System.out.println(tree.toString());
+		tree.inOrderPrint(tree.root);
+		System.out.println();
+		tree.inOrderPrint();
 	}
 
 	private Node<T> root;
@@ -145,6 +149,28 @@ public class BiTree<T> {
 			System.out.print(node.value);
 			System.out.print(" ");
 			inOrderPrint(node.right);
+		}
+	}
+
+	//iterative
+	public void inOrderPrint() {
+		final Deque<Node<T>> stack = new ArrayDeque<>();
+		Node<T> root = this.root;
+		while (true) {
+			while (root != null) {
+				stack.push(root);
+				root = root.left;
+			}
+
+			if (stack.isEmpty()) {
+				break;
+			}
+
+			final Node<T> current = stack.pop();
+			System.out.print(current.value);
+			System.out.print(" ");
+
+			root = current.right;
 		}
 	}
 

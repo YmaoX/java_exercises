@@ -547,8 +547,8 @@ public class Exercise {
 		int carry = 0;
 		for (int j = rtn[0].length - 1; j >= 0; j--) {
 			int sum = 0;
-			for (int i = 0; i < rtn.length; i++) {
-				sum += rtn[i][j];
+			for (final int[] element : rtn) {
+				sum += element[j];
 			}
 			sum += carry;
 			carry = sum / 10;
@@ -560,4 +560,5 @@ public class Exercise {
 
 		return sb.reverse().toString();
 	}
+
 }
