@@ -21,9 +21,8 @@ public class BiTree<T> {
 		for (final int i : arr) {
 			tree.insert(i);
 		}
-		tree.inOrderPrint(tree.root);
-		System.out.println();
-		tree.inOrderPrint();
+		System.out.println(tree.toString());
+		tree.levelOrderPrint();
 	}
 
 	private Node<T> root;
@@ -171,6 +170,26 @@ public class BiTree<T> {
 			System.out.print(" ");
 
 			root = current.right;
+		}
+	}
+
+	public void levelOrderPrint() {
+		final Deque<Node<T>> queue = new ArrayDeque<>();
+		if (this.root == null) {
+			return;
+		}
+		queue.offerLast(this.root);
+		while (!queue.isEmpty()) {
+			final Node<T> node = queue.pollFirst();
+			System.out.print(node.value);
+			System.out.print(" ");
+
+			if (node.left != null) {
+				queue.offerLast(node.left);
+			}
+			if (node.right != null) {
+				queue.offerLast(node.right);
+			}
 		}
 	}
 
