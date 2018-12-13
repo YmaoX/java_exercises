@@ -44,7 +44,8 @@ public class Exercise {
 //		System.out.println(searchInsertPosition(new int[] { 1, 3, 5, 6 }, 5));
 //		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
 //		System.out.println(multiplyStrings("123", "456"));
-		System.out.println(uniquePathsDP(7, 3));
+//		System.out.println(uniquePathsDP(7, 3));
+		System.out.println(uniquePaths2(new int[][] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } }));
 	}
 
 	/*
@@ -607,6 +608,49 @@ public class Exercise {
 				dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
 			}
 		}
+		return dp[m - 1][n - 1];
+	}
+
+	/*
+	 * An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+	 */
+	public static int uniquePaths2(final int[][] grid) {
+		final int m = grid.length;
+		if (m == 0) {
+			return 0;
+		}
+		final int n = grid[0].length;
+		if (m == 0) {
+			return 0;
+		}
+
+		final int[][] dp = new int[m][n];
+		for (int i = 0; i < n; i++) {
+			if (grid[0][i] != 1) {
+				dp[0][i] = 1;
+			} else {
+				dp[0][i] = 0;
+				break;
+			}
+		}
+		for (int i = 0; i < m; i++) {
+			if (grid[i][0] != 1) {
+				dp[i][0] = 1;
+			} else {
+				dp[i][0] = 0;
+				break;
+			}
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (grid[i][j] == 1) {
+					dp[i][j] = 0;
+				} else {
+					dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+				}
+			}
+		}
+
 		return dp[m - 1][n - 1];
 	}
 }
