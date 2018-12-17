@@ -45,7 +45,8 @@ public class Exercise {
 //		System.out.println(Arrays.toString(searchForARange(new int[] { 5, 7, 7, 8, 8, 10 }, 6)));
 //		System.out.println(multiplyStrings("123", "456"));
 //		System.out.println(uniquePathsDP(7, 3));
-		System.out.println(uniquePaths2(new int[][] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } }));
+//		System.out.println(uniquePaths2(new int[][] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } }));
+		System.out.println(heightOfTree(new int[] { -1, 0, 1, 6, 6, 0, 0, 2, 7 }));
 	}
 
 	/*
@@ -652,5 +653,24 @@ public class Exercise {
 		}
 
 		return dp[m - 1][n - 1];
+	}
+
+	/*
+	 * p[] indicates the parent of ith node in the tree. Parent of the root is indicated with -1.
+	 */
+	public static int heightOfTree(final int p[]) {
+		int maxHeight = -1;
+		for (int i = 0; i < p.length; i++) {
+			int j = i;
+			int height = 0;
+			while (p[j] != -1) {
+				j = p[j];
+				height += 1;
+			}
+			if (height > maxHeight) {
+				maxHeight = height;
+			}
+		}
+		return maxHeight;
 	}
 }
