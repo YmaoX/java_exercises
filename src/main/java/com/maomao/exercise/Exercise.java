@@ -46,7 +46,8 @@ public class Exercise {
 //		System.out.println(multiplyStrings("123", "456"));
 //		System.out.println(uniquePathsDP(7, 3));
 //		System.out.println(uniquePaths2(new int[][] { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } }));
-		System.out.println(heightOfTree(new int[] { -1, 0, 1, 6, 6, 0, 0, 2, 7 }));
+//		System.out.println(heightOfTree(new int[] { -1, 0, 1, 6, 6, 0, 0, 2, 7 }));
+		System.out.println(simplyPath("/aaa/../.././bbb//..//c"));
 	}
 
 	/*
@@ -175,14 +176,6 @@ public class Exercise {
 		}
 
 		return length;
-	}
-
-	/*
-	 * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
-	 */
-	public static String longestPalindromicSubstring(final String s) {
-
-		return null;
 	}
 
 	/*
@@ -673,4 +666,44 @@ public class Exercise {
 		}
 		return maxHeight;
 	}
+
+	public static String simplyPath(final String path) {
+		if (!path.startsWith("/")) {
+			//must be absolute path
+			return "error";
+		}
+		String pathF = path;
+		if (!path.endsWith("/")) {
+			pathF += "/";
+		}
+		final StringBuilder rtn = new StringBuilder();
+		int startIdx = -1;
+		int tmpIdx;
+		while ((tmpIdx = pathF.indexOf('/', startIdx)) != -1) {
+			if (startIdx != -1) {
+				final String current = pathF.substring(startIdx, tmpIdx);
+				switch (current) {
+				case ".":
+				case "":
+					break;
+				case "..":
+					final int idx = rtn.lastIndexOf("/");
+					if (idx > -1) {
+						rtn.delete(idx, rtn.length());
+					}
+					break;
+				default:
+					rtn.append("/").append(current);
+					break;
+				}
+			}
+			startIdx = tmpIdx + 1;
+		}
+
+		if (rtn.length() == 0) {
+			rtn.append("/");
+		}
+		return rtn.toString();
+	}
+
 }
