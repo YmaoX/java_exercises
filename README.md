@@ -1,2 +1,2 @@
-basic java exercises
-just for practice
+basic java exercises  
+just for practice  
